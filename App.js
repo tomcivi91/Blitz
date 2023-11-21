@@ -6,6 +6,8 @@ import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   Alert,
 } from "react-native";
 import { useForm, Controller, useFormState } from "react-hook-form";
@@ -38,162 +40,169 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.formContainer}>
-        <Controller
-          control={control}
-          render={({ field }) => (
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Account Type:</Text>
-              <View style={styles.pickerSelectContainer}>
-                <RNPickerSelect
-                  onValueChange={(value) => setValue("AccountType", value)}
-                  items={[{ label: "Manual", value: "Manual" }]}
-                  placeholder={{
-                    label: "Advanced",
-                    value: "Advanced",
-                  }}
-                  value={field.value}
-                />
-              </View>
-            </View>
-          )}
-          name="AccountType"
-          defaultValue="Advanced"
-        />
-
-        <Controller
-          control={control}
-          render={({ field }) => (
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>User Name:</Text>
-              <TextInput
-                style={styles.input}
-                value={field.value}
-                onChangeText={(text) => field.onChange(text)}
-                placeholder="name@example.com"
-              />
-            </View>
-          )}
-          name="username"
-          defaultValue=""
-          rules={{ required: "Username is required", pattern: /^\S+@\S+$/i }}
-        />
-        {errors.username && (
-          <View style={styles.errorTextContainer}>
-            <Text style={styles.errorText}>{errors.username.message}</Text>
-          </View>
-        )}
-
-        <Controller
-          control={control}
-          render={({ field }) => (
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Password:</Text>
-              <TextInput
-                style={styles.input}
-                value={field.value}
-                onChangeText={(text) => field.onChange(text)}
-                secureTextEntry
-                placeholder="Required"
-              />
-            </View>
-          )}
-          name="password"
-          defaultValue=""
-          rules={{ required: "Password is required", pattern: /\./ }}
-        />
-        {errors.password && (
-          <View style={styles.errorTextContainer}>
-            <Text style={styles.errorText}>{errors.password.message}</Text>
-          </View>
-        )}
-
-        <Controller
-          control={control}
-          render={({ field }) => (
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Server Address:</Text>
-              <TextInput
-                style={styles.input}
-                value={field.value}
-                onChangeText={(text) => field.onChange(text)}
-                placeholder="example.com"
-              />
-            </View>
-          )}
-          name="serverAddress"
-          defaultValue=""
-          rules={{ required: "Server Address is required" }}
-        />
-        {errors.serverAddress && (
-          <View style={styles.errorTextContainer}>
-            <Text style={styles.errorText}>{errors.serverAddress.message}</Text>
-          </View>
-        )}
-
-        {accountType !== "Manual" && (
-          <>
-            <Controller
-              control={control}
-              render={({ field }) => (
-                <View style={styles.inputContainer}>
-                  <Text style={styles.label}>Server Path:</Text>
-                  <TextInput
-                    style={styles.input}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.formContainer}>
+          <Controller
+            control={control}
+            render={({ field }) => (
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Account Type:</Text>
+                <View style={styles.input}>
+                  <RNPickerSelect
+                    onValueChange={(value) => setValue("AccountType", value)}
+                    items={[{ label: "Manual", value: "Manual" }]}
+                    placeholder={{
+                      label: "Advanced",
+                      value: "Advanced",
+                    }}
                     value={field.value}
-                    onChangeText={(text) => field.onChange(text)}
-                    placeholder="/calendars/user/"
                   />
                 </View>
-              )}
-              name="ServerPath"
-              defaultValue=""
-              rules={{ validate: validateServerPath }}
-            />
-            {errors.ServerPath && (
-              <View style={styles.errorTextContainer}>
-                <Text style={styles.errorText}>
-                  {errors.ServerPath.message}
-                </Text>
               </View>
             )}
+            name="AccountType"
+            defaultValue="Advanced"
+          />
 
-            <Controller
-              control={control}
-              render={({ field }) => (
-                <View style={[styles.inputContainer, { marginBottom: 5 }]}>
-                  <Text style={[styles.label, { marginRight: 10 }]}>Port:</Text>
-                  <View style={[styles.input, { width: 60, marginRight: 160 }]}>
+          <Controller
+            control={control}
+            render={({ field }) => (
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>User Name:</Text>
+                <TextInput
+                  style={styles.input}
+                  value={field.value}
+                  onChangeText={(text) => field.onChange(text)}
+                  placeholder="name@example.com"
+                />
+              </View>
+            )}
+            name="username"
+            defaultValue=""
+            rules={{ required: "Username is required", pattern: /^\S+@\S+$/i }}
+          />
+          {errors.username && (
+            <View style={styles.errorTextContainer}>
+              <Text style={styles.errorText}>{errors.username.message}</Text>
+            </View>
+          )}
+
+          <Controller
+            control={control}
+            render={({ field }) => (
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Password:</Text>
+                <TextInput
+                  style={styles.input}
+                  value={field.value}
+                  onChangeText={(text) => field.onChange(text)}
+                  secureTextEntry
+                  placeholder="Required"
+                />
+              </View>
+            )}
+            name="password"
+            defaultValue=""
+            rules={{ required: "Password is required" }}
+          />
+          {errors.password && (
+            <View style={styles.errorTextContainer}>
+              <Text style={styles.errorText}>{errors.password.message}</Text>
+            </View>
+          )}
+
+          <Controller
+            control={control}
+            render={({ field }) => (
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Server Address:</Text>
+                <TextInput
+                  style={styles.input}
+                  value={field.value}
+                  onChangeText={(text) => field.onChange(text)}
+                  placeholder="example.com"
+                />
+              </View>
+            )}
+            name="serverAddress"
+            defaultValue=""
+            rules={{ required: "Server Address is required" }}
+          />
+          {errors.serverAddress && (
+            <View style={styles.errorTextContainer}>
+              <Text style={styles.errorText}>
+                {errors.serverAddress.message}
+              </Text>
+            </View>
+          )}
+
+          {accountType !== "Manual" && (
+            <>
+              <Controller
+                control={control}
+                render={({ field }) => (
+                  <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Server Path:</Text>
                     <TextInput
-                      style={{ textAlign: "right" }}
+                      style={styles.input}
                       value={field.value}
                       onChangeText={(text) => field.onChange(text)}
-                      keyboardType="numeric"
+                      placeholder="/calendars/user/"
                     />
                   </View>
+                )}
+                name="ServerPath"
+                defaultValue=""
+                rules={{ validate: validateServerPath }}
+              />
+              {errors.ServerPath && (
+                <View style={styles.errorTextContainer}>
+                  <Text style={styles.errorText}>
+                    {errors.ServerPath.message}
+                  </Text>
                 </View>
               )}
-              name="Port"
-              defaultValue=""
-              rules={{ validate: validatePort }}
-            />
-            {errors.Port && (
-              <View style={styles.errorTextContainer}>
-                <Text style={styles.errorText}>{errors.Port.message}</Text>
-              </View>
-            )}
-          </>
-        )}
 
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={handleSubmit(onSubmit)}
-        >
-          <View style={styles.customButton}>
-            <Text style={styles.customButtonText}>Submit</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+              <Controller
+                control={control}
+                render={({ field }) => (
+                  <View style={[styles.inputContainer, { marginBottom: 5 }]}>
+                    <Text style={[styles.label, { marginRight: 10 }]}>
+                      Port:
+                    </Text>
+                    <View
+                      style={[styles.input, { width: 60, marginRight: 160 }]}
+                    >
+                      <TextInput
+                        value={field.value}
+                        onChangeText={(text) => field.onChange(text)}
+                        keyboardType="numeric"
+                      />
+                    </View>
+                  </View>
+                )}
+                name="Port"
+                defaultValue=""
+                rules={{ validate: validatePort }}
+              />
+              {errors.Port && (
+                <View style={styles.errorTextContainer}>
+                  <Text style={styles.errorText}>{errors.Port.message}</Text>
+                </View>
+              )}
+            </>
+          )}
+
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={handleSubmit(onSubmit)}
+          >
+            <View style={styles.customButton}>
+              <Text style={styles.customButtonText}>Submit</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
@@ -227,6 +236,8 @@ const styles = StyleSheet.create({
     width: 220,
     borderWidth: 1,
     paddingHorizontal: 10,
+    borderRadius: 5,
+    justifyContent: "center",
   },
   buttonContainer: {
     backgroundColor: "grey",
@@ -240,14 +251,6 @@ const styles = StyleSheet.create({
   customButtonText: {
     color: "white",
     fontSize: 25,
-  },
-  pickerSelectContainer: {
-    height: 40,
-    borderWidth: 1,
-
-    paddingHorizontal: 10,
-    justifyContent: "center",
-    width: 220,
   },
   errorText: {
     color: "red",
